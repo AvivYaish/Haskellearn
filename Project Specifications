@@ -1,0 +1,70 @@
+Specification
+------------------
+
+Files
+------------------
+EllipsoidSpec.hs
+KNNSpec.hs
+Label.hs
+Learner.hs
+Loss.hs
+OnlineLearner.hs
+Project Speficiation
+VectorUtils.hs
+Writer.hs
+
+Idioms we used
+------------------
+Pattern matching - classify in Learner.hs, Eq in Label.hs, etc'.
+Higher order functions - error in Learner.hs, doing `mappend` between DiffLists
+  creates a new function in the DiffList (there is a concatenation of functions), etc'.
+New types - LearningParameters, TrainingKnowledge in Learner.hs, etc'.
+Derived - Label derived Show in Label.hs (also instance of Ord and Eq).
+Lambda functions - We use lambdas where DiffList instantiate Monoid at Writer.hs (line 37).
+Applicative functor - Writer monad in Writer.hs (instance of applicative as it is a monad).
+Monoids - DiffList in Writer.hs instantiate Monoid.
+Lazy evaluation - takeFromDiffList in DiffList, Printing a DiffList is lazy, etc'.
+
+Functionality Pros
+------------------
+1) Writing functional code is like writing math!
+
+2) High order functions:
+High order functions make the ability to get functions that get as many
+parameters as needed and returns function without complicated function pointers.
+
+High order functions allow us to make a function more generic, a good
+example is our error function in Learner.hs, that receives as a parameter a
+generic loss function.
+
+3) It was easy to write the tests because in Haskell functions are functions in
+the mathematical sense, meaning that the same result will be given each time we
+use specific arguments.
+Each function can be isolated as it has its specific arguments and return value
+without any relation to a class or global variables.
+
+4) It was easier to debug as the functions are stateless and
+no members or in function variables could be a reason for bugs.
+Meaning, if a problem occurs the cause is the function and that's the place where
+we should look at.
+
+5) Code usually is much shorter.
+
+
+Functionality Cons
+------------------
+1) Its hard to predict the memory space used in a lazy program (due to
+laziness 4 can actually be 2+2 which take more bits to represent, or the
+DiffList which can take more bits to represent than a simple string).
+
+2) Functional programmings eschewing of classes, and specifically stateful classes,
+prevents the easy modeling of objects with classes, like databases.
+
+3) Input and output aren't functions in the mathematical sense, thus they are
+inherently "second-class citizens" in functional programming.
+
+4) As imperative programmers its hard to learn and master (due to the differences
+between imperative and functional languages).
+
+5) Functional languages are less widespread, making it difficult to find help.
+We used Haskell's official IRC channel and StackOverflow's Haskell page for help.
